@@ -1,16 +1,16 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "agricidaniel-claude-seo",
+  "name": "andrezarodrigues-skills",
   "owner": {
-    "name": "AgriciDaniel"
+    "name": "andrezarodrigues-lgtm"
   },
   "metadata": {
-    "description": "Comprehensive SEO analysis plugin for Claude Code. 25 sub-skills and 18 sub-agents, plus 8 optional MCP extensions (DataForSEO, Firecrawl, Banana, Ahrefs, SE Ranking, Profound, Bing Webmaster, Unlighthouse). v2.2.5 hardens installation, schema validation, rendered-page and accessibility analysis, runtime portability, and current Google Search guidance."
+    "description": "Personal skills marketplace. Currently vendors claude-seo (comprehensive SEO analysis plugin for Claude Code: 25 sub-skills and 18 sub-agents, plus 8 optional MCP extensions). Original project: https://github.com/AgriciDaniel/claude-seo"
   },
   "plugins": [
     {
       "name": "claude-seo",
-      "source": "./",
+      "source": "./claude-seo",
       "description": "Comprehensive SEO analysis plugin for Claude Code. 25 sub-skills and 18 sub-agents, plus 8 optional MCP extensions. v2.2.5 hardens installation, schema validation, rendered-page and accessibility analysis, runtime portability, and current Google Search guidance.",
       "author": {
         "name": "AgriciDaniel",
