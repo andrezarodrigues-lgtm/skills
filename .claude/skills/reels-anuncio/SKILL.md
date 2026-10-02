@@ -10,7 +10,10 @@ vem das **referências que o usuário mandar**: vídeos de anúncio que ele quer
 Medir o estilo nelas (posição e corpo da legenda, contorno, sombra, cores, fonte
 aproximada, cortes por segundo, tipo de insert) e registrar em
 `<pasta_dos_videos>/edit/estilo.md`. Mostrar ao usuário o que foi medido antes de editar.
-Sem referência, partir de `references/estilo-padrao.md`.
+Estilo padrão deste usuário: `references/estilo-referencias.md`, medido nos três anúncios
+em `references/referencias/` (família A, UGC com legenda serifada; família B, anúncio
+produzido com legenda em pílula). Referência nova do usuário complementa ou substitui.
+`references/estilo-padrao.md` só serve se nada disso se aplicar.
 
 Skills irmãs neste repo:
 - `video-use`: `helpers/transcribe.py` (ElevenLabs Scribe, palavra por palavra) e
