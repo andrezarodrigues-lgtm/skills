@@ -1,15 +1,16 @@
 ---
 name: reels-anuncio
-description: Transforma vídeo bruto longo (talking head, gravação de celular ou DJI) em Reel/anúncio vertical 1080x1920 com corte dinâmico, punch-in ancorado no rosto, legenda queimada por palavra e motion graphics que significam a palavra falada. Use quando o usuário pedir um Reel, Short, TikTok ou anúncio a partir de material gravado, ou citar um cliente com arquivo em references/marcas/ (ex.: ContrataPJ). Pipeline ffmpeg corta, Remotion compõe, verificação por medição.
+description: Transforma vídeo bruto longo (talking head, gravação de celular ou DJI) em Reel/anúncio vertical 1080x1920 com corte dinâmico, punch-in ancorado no rosto, legenda queimada por palavra e motion graphics que significam a palavra falada. Use quando o usuário pedir para editar um vídeo, cortar um vídeo longo em anúncio, ou fazer um Reel, Short ou TikTok a partir de material gravado. O estilo visual vem das referências que o usuário mandar. Pipeline ffmpeg corta, Remotion compõe, verificação por medição.
 ---
 
 # Reels / anúncios — método de produção (v2)
 
-Este arquivo é o método. A identidade de cada cliente (paleta, fonte, tom, medidas de
-legenda e insert) mora em `references/marcas/<cliente>.md`. Antes de qualquer coisa, ler
-o arquivo da marca do pedido. Se o cliente não tiver arquivo, criar um a partir das
-referências que o usuário mandar, **medindo** nos vídeos publicados (posição da legenda,
-corpo da fonte, contorno, sombra), e confirmar com o usuário antes de usar.
+Este arquivo é o método. O estilo (paleta, fonte, medidas de legenda e insert, ritmo)
+vem das **referências que o usuário mandar**: vídeos de anúncio que ele quer imitar.
+Medir o estilo nelas (posição e corpo da legenda, contorno, sombra, cores, fonte
+aproximada, cortes por segundo, tipo de insert) e registrar em
+`<pasta_dos_videos>/edit/estilo.md`. Mostrar ao usuário o que foi medido antes de editar.
+Sem referência, partir de `references/estilo-padrao.md`.
 
 Skills irmãs neste repo:
 - `video-use`: `helpers/transcribe.py` (ElevenLabs Scribe, palavra por palavra) e
@@ -26,7 +27,7 @@ Saídas sempre em `<pasta_dos_videos>/edit/`, nunca dentro das pastas das skills
 Se o usuário não respondeu algum item, perguntar numa única mensagem. Não cortar antes
 de ter o pedido fechado.
 
-- **Cliente / marca:** … (arquivo em `references/marcas/`)
+- **Referências de estilo:** … (vídeos que o anúncio deve parecer)
 - **Tema / roteiro:** …
 - **Material bruto:** … (caminho da pasta com os vídeos)
 - **Duração alvo:** … (padrão: o que a fala pedir, tipicamente 25 a 45s com a vinheta)
@@ -46,11 +47,12 @@ queimada, motion graphics nos pontos de ênfase. Documentar as decisões num `pr
 na pasta de trabalho.
 
 
-## 2. Bloco da marca
+## 2. Estilo
 
-Ler `references/marcas/<cliente>.md`. Ele define paleta (com a cor herói), tipografia e
-pesos, tom de voz e a especificação visual medida de legenda e insert. Toda menção a
-"seção 2" abaixo aponta para esse arquivo.
+O `estilo.md` do projeto (medido nas referências) ou, na falta dele,
+`references/estilo-padrao.md`. Define paleta (com uma cor herói), tipografia e pesos, tom
+dos textos e a especificação de legenda e insert. Toda menção a "seção 2" abaixo aponta
+para esse arquivo.
 
 ## 3. Setup do zero
 
@@ -68,7 +70,7 @@ npm i typescript@5.6.3              # obrigatório: o bundler usa ts.sys, removi
 python3 -m pip install "opencv-python-headless==4.10.0.84" pillow numpy pypdf
 ```
 
-Baixar a fonte da marca (no exemplo abaixo, Poppins da ContrataPJ) e colocar os `.ttf` em `public/fonts/`. Carregar por `@font-face`, nunca
+Baixar a fonte do estilo (no exemplo abaixo, Poppins, a padrão) e colocar os `.ttf` em `public/fonts/`. Carregar por `@font-face`, nunca
 por CDN — o render roda offline:
 
 ```tsx
@@ -250,8 +252,8 @@ falada — pegar o quadro exato da palavra no JSON de legendas, não o do segmen
 
 **Legibilidade: medir, não supor.** Texto branco sobre fundo translúcido claro some em
 locação clara — num corredor com janela estourada, um chip inteiro desapareceu. Fundo
-**navy `rgba(28,38,94,0.82)`** resolve em qualquer fundo e fica on-brand: contraste
-medido de 7,9 a 8,8:1 (mínimo WCAG é 4,5:1).
+**escuro e opaco**, como `rgba(28,38,94,0.82)` ou a cor escura da paleta a ~82%, resolve
+em qualquer fundo: contraste medido de 7,9 a 8,8:1 (mínimo WCAG é 4,5:1).
 
 ```python
 def luminancia(rgb):
@@ -311,19 +313,17 @@ for si, (s0, n_frames, grupos) in enumerate(SEGS):
             claimed.add(k)
 ```
 
-Juntar também os pares que o ASR separa e a marca escreve junto ("Contrata" + "PJ" →
-"ContrataPJ").
+Juntar também os pares que o ASR separa e que se escrevem juntos (nomes de marca,
+produto, @perfil).
 
 ## 10. Vinheta de fecho (6s, opcional)
 
-O exemplo abaixo é o da ContrataPJ. Para outra marca, o conceito sai do arquivo da
-marca; a cronologia em 180 quadros e o fatiamento do logo continuam valendo.
-
-Conceito: a promessa da marca virada em movimento. Três chips ("Contrato", "Nota
-fiscal", "Pagamento") entram escalonados, convergem para o centro, se fundem num pulso
-na cor herói, e do pulso nasce o ícone do logo — que é um elo. Depois a marca se monta:
+Só entra se o usuário mandar logo. Conceito: a promessa do produto virada em movimento.
+Exemplo: três chips com os benefícios entram escalonados, convergem para o centro, se
+fundem num pulso na cor herói, e do pulso nasce o ícone do logo. Depois a marca se monta:
 ícone assenta, wordmark revelado por máscara (`clip-path: inset`) da esquerda para a
-direita, tagline sobe. Fundo navy com malha de índigo e coral em movimento.
+direita, tagline sobe. Fundo na cor escura da paleta com malha das cores de acento em
+movimento.
 
 Para isso, **fatiar o arquivo do logo** em ícone / wordmark / tagline e guardar as
 peças em `public/brand/`. É o que permite a marca se montar em vez de só aparecer.

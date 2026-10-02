@@ -10,4 +10,4 @@ Instaladas em `.claude/skills/`:
 - `remotion-motion-graphics` (github.com/haidrrrry/claude-remotion-skill @ 1dcbe5e): motion graphics em Remotion. Exemplos de composição em `examples/`.
 
 Objetivo do projeto: transformar vídeos longos em anúncios curtos, seguindo as referências visuais que o usuário fornecer. Saídas de edição vão sempre em `<pasta_dos_videos>/edit/`, nunca dentro das pastas das skills.
-- `reels-anuncio` (método próprio): pipeline de Reel/anúncio vertical com punch-in ancorado no rosto, legenda por palavra e inserts que significam a palavra falada. Marcas em `.claude/skills/reels-anuncio/references/marcas/` (hoje: ContrataPJ). Cliente novo = arquivo novo de marca, o método não muda.
+- `reels-anuncio` (método próprio): edita vídeos longos em anúncios/Reels verticais com punch-in ancorado no rosto, legenda por palavra e inserts que significam a palavra falada. Estilo medido nas referências que o usuário manda; sem referência, `references/estilo-padrao.md`.
